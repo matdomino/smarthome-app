@@ -1,7 +1,15 @@
+import { useState } from "react";
 import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 import './login.scss';
 
 export default function Login() {
+  const [ SignInForm, setSignInForm ] = useState(true);
+
+  const handleToggleForm = () => {
+    setSignInForm(!SignInForm)
+  };
+
   return(
     <>
       <div className="navBar">
@@ -9,7 +17,7 @@ export default function Login() {
         <a href="https://github.com/matdomino" target="_blank">Mateusz Domino 2023-2024</a>
       </div>
       <div className="form">
-        <SignIn />
+        { SignInForm ? <SignIn toggleForm={handleToggleForm} /> : <SignUp toggleForm={handleToggleForm} /> }
       </div>
     </>
   );

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-export default function SignIn () {
+export default function SignIn ({ toggleForm }) {
   const [ loginResult, setLoginResult ] = useState(null);
 
   const initialValues = {
@@ -55,7 +55,7 @@ export default function SignIn () {
         </div>
         <button type="submit">Zaloguj się</button>
         <div>
-          <a href="">Nie masz konta? Kliknij tutaj.</a>
+          <a href="#" onClick={toggleForm}>Nie masz konta? Kliknij tutaj.</a>
         </div>
         <div className='errs'>
           <span>{errors.username}</span>
