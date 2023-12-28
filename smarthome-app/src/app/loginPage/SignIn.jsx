@@ -30,6 +30,7 @@ export default function SignIn () {
   return(
     <div>
       <form onSubmit={handleSubmit}>
+        <h2>Zaloguj się</h2>
         <div>
           <label>
             Nazwa użytkownika:
@@ -53,6 +54,9 @@ export default function SignIn () {
           />
         </div>
         <button type="submit">Zaloguj się</button>
+        <div>
+          <a href="">Nie masz konta? Kliknij tutaj.</a>
+        </div>
         <div className='errs'>
           <span>{errors.username}</span>
           <span>{errors.password}</span>
