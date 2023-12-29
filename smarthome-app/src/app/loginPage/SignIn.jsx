@@ -1,9 +1,13 @@
 import { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
+
+const expressUrl = "http://localhost:8000/"; // zmienic pozniej
 
 export default function SignIn ({ toggleForm }) {
   const [ loginResult, setLoginResult ] = useState(null);
+  const [ success, setSuccess ] = useState(null);
 
   const initialValues = {
     username: '',
@@ -15,8 +19,20 @@ export default function SignIn ({ toggleForm }) {
     password: Yup.string().required('Hasło nie może być puste.')
   });
 
-  const onSubmit = (values) => {
-    // Dodac zapytanie do bazy danych
+  const onSubmit = async (values, { resetForm }) => {
+    try {
+      const res = await axios.get(`${expressUrl}user`, { username: values.username, password: values.password });
+      
+      if (res.data.status === 'success') {
+        console.log('Udało sie polaczyc.');
+      } else {
+        alert('Niepoprawne dane logowania.')
+      }
+    } catch (err) {
+      alert('Brak odpowiedzi serwera. Skontaktuj się z administratorem.')
+    }
+
+    resetForm();
   }
 
   const formik = useFormik({
