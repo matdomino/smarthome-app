@@ -1,15 +1,20 @@
 "use client";
 
-import Login from "./loginPage/Login";
-import Home from "./homePage/Home";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function App() {
-  const isLoggedIn = false
+  const isLoggedIn = true;
+  const router = useRouter();
+
+  if (!isLoggedIn) {
+    router.push("/login");
+  } else {
+    router.push("/home");
+  }
 
   return (
     <>
-    {/* <Home /> */}
-    <Login />
     </>
   );
 }
