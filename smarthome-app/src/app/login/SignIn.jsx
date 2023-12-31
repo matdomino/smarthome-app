@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+import AuthContext from '../context/AuthProvider';
 
-const expressUrl = "http://localhost:8000/"; // zmienic pozniej
+const expressUrl = "http://158.101.175.186:3000/";
 
 export default function SignIn ({ toggleForm }) {
+  const { setAuth } = useContext(AuthContext);
   const [ loginResult, setLoginResult ] = useState(null);
   const [ success, setSuccess ] = useState(null);
 

@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const { MongoClient, ObjectId } = require('mongodb');
 
 const app = express();
-const port = 8000;  //zmienic pozniej na 3000 moze
+const port = 3000;
 app.use(bodyParser.json());
 
 const dbUrl = 'mongodb://localhost:27017/';
@@ -19,6 +19,14 @@ async function connect() {
 
         const db = client.db(dbName);
         const usersCollection = db.collection('users')
+
+        app.get('/', async(req, res) => {
+            try {
+                res.send('smarthome');
+            } catch (err) {
+                console.error(err);
+            }
+        });
 
         app.get('/user', async (req, res) => {
             try {

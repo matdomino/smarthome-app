@@ -1,0 +1,32 @@
+@import '../_variables.scss';
+
+body{
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  height: 100vh;
+  width: 100%;
+
+  .navBar{
+    box-shadow: 0rem 0rem 0.5rem $primary950;
+    box-sizing: border-box;
+    padding: 0.5rem 2rem;
+    background-color: $primary500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+
+    .name{
+      font-size: x-large;
+      color: $primary50;
+    }
+
+    a{
+      color: $primary200;
+      text-decoration: none;
+    }
+  }
+}
