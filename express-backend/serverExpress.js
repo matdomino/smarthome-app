@@ -44,6 +44,10 @@ async function connect() {
             }
         });
 
+        app.listen(port, () => {
+            console.log(`Serwer działa na porcie: ${port}`);
+        });
+
     } catch (err) {
         console.error('Wystąpił błąd podczas łączenia z bazą.', err);
     }
