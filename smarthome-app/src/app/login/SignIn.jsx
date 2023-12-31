@@ -1,10 +1,10 @@
 import { useState, useContext } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
 import AuthContext from '../context/AuthProvider';
+import axios from '@/api/axios';
 
-const expressUrl = "http://158.101.175.186:3000/";
+const AUTH_URL = "/auth";
 
 export default function SignIn ({ toggleForm }) {
   const { setAuth } = useContext(AuthContext);
@@ -22,11 +22,17 @@ export default function SignIn ({ toggleForm }) {
   });
 
   const onSubmit = async (values, { resetForm }) => {
+    const userData = {
+      user: values.username,
+      pass: values.password
+    };
+
     try {
-      const res = await axios.get(`${expressUrl}user`, { username: values.username, password: values.password });
+      const res = await axios.post(AUTH_URL, userData);
       
       if (res.data.status === 'success') {
-        console.log('Udało sie polaczyc.');
+        const accessToken = res.data.accessToken;
+        setAuth({ user: values.username, password: values.password, accessToken });
       } else {
         alert('Niepoprawne dane logowania.')
       }

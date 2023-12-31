@@ -1,4 +1,4 @@
-use("SmarthHomeDB");
+use("SmartHomeDB");
 
 db.createCollection("users");
 
