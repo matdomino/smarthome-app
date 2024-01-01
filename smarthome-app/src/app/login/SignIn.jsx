@@ -1,4 +1,5 @@
 import { useState, useContext } from 'react';
+import { useRouter } from "next/navigation";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import AuthContext from '../context/AuthProvider';
@@ -10,6 +11,7 @@ export default function SignIn ({ toggleForm }) {
   const { setAuth } = useContext(AuthContext);
   const [ loginResult, setLoginResult ] = useState(null);
   const [ success, setSuccess ] = useState(null);
+  const router = useRouter();
 
   const initialValues = {
     username: '',
@@ -31,8 +33,9 @@ export default function SignIn ({ toggleForm }) {
       const res = await axios.post(AUTH_URL, userData);
       
       if (res.data.status === 'success') {
-        const accessToken = res.data.accessToken;
-        setAuth({ user: values.username, password: values.password, accessToken });
+        const accessToken = res.data.key;
+        setAuth({ user: values.username, password: values.password, token: accessToken });
+        router.push("/home");
       } else {
         alert('Niepoprawne dane logowania.')
       }

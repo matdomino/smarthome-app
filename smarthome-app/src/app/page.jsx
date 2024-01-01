@@ -9,7 +9,7 @@ export default function App() {
   const isLoggedIn = true;
   const router = useRouter();
 
-  if (auth === null) {
+  if (true) { // Dodac oblusge ciasteczka do sesji logowania
     router.push("/login");
   } else {
     router.push("/home");
