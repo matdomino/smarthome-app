@@ -13,9 +13,9 @@ export default function SignUp ({ toggleForm }) {
     };
   
     const validationSchema = Yup.object({
-      email: Yup.string().email('Niepoprawny adres email').required('Email nie może być pusty'),
-      username: Yup.string().required('Nazwa użytkownika nie może być pusta.'),
-      password: Yup.string().min(5, 'Za krótkie hasło').required('Hasło nie może być puste.'),
+      email: Yup.string().email('Niepoprawny adres email').max(35, 'Za długi email').required('Email nie może być pusty'),
+      username: Yup.string().min(5, "Za krótka nazwa użytkownika").max(20, "Za długa nazwa użytkownika").required('Nazwa użytkownika nie może być pusta.'),
+      password: Yup.string().min(5, 'Za krótkie hasło').max(40, "Za długie hasło").required('Hasło nie może być puste.'),
       passwordRep: Yup.string().oneOf([Yup.ref('password'), null], 'Hasła się nie zgadzają')
     });
   

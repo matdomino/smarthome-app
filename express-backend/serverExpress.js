@@ -36,8 +36,57 @@ async function connect() {
         } else {
           res.send({ status: 'failure' });
         }
-      } catch (err) {
+      } catch(err) {
         console.error(err);
+        res.status(500).json({ error: "Wystąpił błąd serwera." });
+      }
+    });
+
+    app.post('/createacc', async (req, res) => {
+      try {
+        const { email, user, pass } = req.body;
+        
+        let correctData = true;
+
+        if (!email || typeof(email) !== "string" || email.length > 35) {
+          correctData = false;
+        } else if (!user || typeof(user) !== "string" || user.length < 5 || user.length > 20) {
+          correctData = false;
+        } else if (!pass || typeof(pass) !== "string" || pass.length < 5 || pass.length > 40) {
+          correctData = false;
+        }
+
+        if (correctData) {
+          const existingUsernameAcc = await usersCollection.findOne({ username: user })
+          const existingEmailAcc = await usersCollection.findOne({ email: email })
+          const encryptedPass = await bcrypt.hash(pass, 10);
+
+          if (existingUsernameAcc === null && existingEmailAcc === null) {
+            const newUser = {
+              email: email,
+              username: user,
+              password: encryptedPass
+            }
+
+            const addUser = await usersCollection.insertOne(newUser);
+
+            if (addUser.acknowledged === true) {
+              const accessToken = jwt.sign({ user: user }, tokenKey, { expiresIn: '1h' });
+              res.json({ status: 'success', key: accessToken });
+            } else {
+              return res.status(500).json({ error: 'Nie udało się dodać użytkoniwka.' });
+            }
+
+          } else {
+            res.status(409).json({ error: "Użytkownik o podanym adresie email lub nazwie konta już istnieje" });
+          }
+        } else {
+          res.status(400).json({ error: "Nieprawidłowe dane wejściowe." });
+        }
+
+      } catch(err) {
+        console.error(err);
+        res.status(500).json({ error: "Wystąpił błąd serwera." });
       }
     });
 
