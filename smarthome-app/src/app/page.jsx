@@ -17,7 +17,7 @@ export default function App() {
     } else if (auth.token && auth.user) {
       setAuth({});
       // NA KONIEC JAK BEDZIE HTTPS TO DODAC OPCJE SECURE DO CIASTECZKA - , secure: true
-      let expirationDate = new Date();
+      const expirationDate = new Date();
       expirationDate.setHours(expirationDate.getHours() + 1);
       cookie.set("isLoggedIn", "true", {expires: expirationDate});
       cookie.set("accessToken", auth.token, {expires: expirationDate, httpOnly: true});

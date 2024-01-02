@@ -2,11 +2,11 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const { MongoClient, ObjectId } = require('mongodb');
+const { MongoClient } = require('mongodb');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const tokenKey = require('./tokenKey')
+const tokenKey = require('./tokenKey');
 
 const app = express();
 const port = 3000;
@@ -24,7 +24,7 @@ async function connect() {
     console.log('Pomyślnie połączono z bazą danych!');
 
     const db = client.db(dbName);
-    const usersCollection = db.collection('users')
+    const usersCollection = db.collection('users');
 
     app.post('/auth', async (req, res) => {
       try {
@@ -45,7 +45,7 @@ async function connect() {
     app.post('/createacc', async (req, res) => {
       try {
         const { email, user, pass } = req.body;
-        
+
         let correctData = true;
 
         if (!email || typeof(email) !== "string" || email.length > 35) {
@@ -57,8 +57,8 @@ async function connect() {
         }
 
         if (correctData) {
-          const existingUsernameAcc = await usersCollection.findOne({ username: user })
-          const existingEmailAcc = await usersCollection.findOne({ email: email })
+          const existingUsernameAcc = await usersCollection.findOne({ username: user });
+          const existingEmailAcc = await usersCollection.findOne({ email: email });
           const encryptedPass = await bcrypt.hash(pass, 10);
 
           if (existingUsernameAcc === null && existingEmailAcc === null) {
@@ -66,7 +66,7 @@ async function connect() {
               email: email,
               username: user,
               password: encryptedPass
-            }
+            };
 
             const addUser = await usersCollection.insertOne(newUser);
 

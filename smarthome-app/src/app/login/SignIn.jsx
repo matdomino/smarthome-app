@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { useRouter } from "next/navigation";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -9,8 +9,6 @@ const AUTH_URL = "/auth";
 
 export default function SignIn ({ toggleForm }) {
   const { setAuth } = useContext(AuthContext);
-  const [ loginResult, setLoginResult ] = useState(null);
-  const [ success, setSuccess ] = useState(null);
   const router = useRouter();
 
   const initialValues = {
@@ -31,20 +29,19 @@ export default function SignIn ({ toggleForm }) {
 
     try {
       const res = await axios.post(AUTH_URL, userData);
-      
       if (res.data.status === 'success') {
         const accessToken = res.data.key;
         setAuth({ user: values.username, token: accessToken });
         router.push("/");
       } else {
-        alert('Niepoprawne dane logowania.')
+        alert('Niepoprawne dane logowania.');
       }
     } catch (err) {
-      alert('Brak odpowiedzi serwera. Skontaktuj się z administratorem.')
+      alert('Brak odpowiedzi serwera. Skontaktuj się z administratorem.');
     }
 
     resetForm();
-  }
+  };
 
   const formik = useFormik({
     initialValues,

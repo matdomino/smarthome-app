@@ -10,21 +10,21 @@ const CREATEACC_URL = "/createacc";
 export default function SignUp ({ toggleForm }) {
     const { setAuth } = useContext(AuthContext);
     const router = useRouter();
-  
+
     const initialValues = {
       email: '',
       username: '',
       password: '',
       passwordRep: ''
     };
-  
+
     const validationSchema = Yup.object({
       email: Yup.string().email('Niepoprawny adres email').max(35, 'Za długi email').required('Email nie może być pusty'),
       username: Yup.string().min(5, "Za krótka nazwa użytkownika").max(20, "Za długa nazwa użytkownika").required('Nazwa użytkownika nie może być pusta.'),
       password: Yup.string().min(5, 'Za krótkie hasło').max(40, "Za długie hasło").required('Hasło nie może być puste.'),
       passwordRep: Yup.string().oneOf([Yup.ref('password'), null], 'Hasła się nie zgadzają')
     });
-  
+
     const onSubmit = async (values, { resetForm }) => {
       const userData = {
         email: values.email,
@@ -49,16 +49,16 @@ export default function SignUp ({ toggleForm }) {
       }
 
       resetForm();
-    }
-  
+    };
+
     const formik = useFormik({
       initialValues,
       validationSchema,
       onSubmit
     });
-  
+
     const { values, handleChange, handleSubmit, errors } = formik;
-  
+
     return(
       <div>
         <form onSubmit={handleSubmit}>
@@ -121,4 +121,3 @@ export default function SignUp ({ toggleForm }) {
       </div>
     );
   }
-  

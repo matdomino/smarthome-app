@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from "next/navigation";
 import cookie from 'js-cookie';
 import './home.scss';
@@ -15,9 +15,9 @@ export default function Home() {
   }, []);
 
   const logout = () => {
-    cookie.remove("isLoggedIn")
+    cookie.remove("isLoggedIn");
     router.push('/');
-  }
+  };
 
   return(
     <>

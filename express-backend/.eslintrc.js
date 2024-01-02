@@ -1,5 +1,12 @@
-{
-  "extends": "next/core-web-vitals",
+module.exports = {
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es2021": true
+  },
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  },
   "rules": {
     "no-console": 1,
     "no-empty": "error",
@@ -24,6 +31,7 @@
     "no-use-before-define": "error",
     "default-case": "error",
     "eqeqeq": "error",
+    "no-alert": "error",
     "no-continue": "error",
     "arrow-spacing": ["error"],
     "block-spacing": ["error"],
@@ -37,8 +45,7 @@
     "semi-style": ["error", "last"],
     "init-declarations": [ "error", "always" ],
     "block-scoped-var": "error",
-    "strict": [ "error", "never" ],
     "no-undef": "error",
     "no-unused-vars": "error"
   }
-}
+};
