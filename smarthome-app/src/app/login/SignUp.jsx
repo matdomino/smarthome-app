@@ -37,8 +37,8 @@ export default function SignUp ({ toggleForm }) {
 
         if (res.data.status === 'success') {
           const accessToken = res.data.key;
-          setAuth({ user: values.username, password: values.password, token: accessToken });
-          router.push("/home");
+          setAuth({ user: values.username, token: accessToken });
+          router.push("/");
         }
       } catch(err) {
         if (err.response && err.response.data.error) {

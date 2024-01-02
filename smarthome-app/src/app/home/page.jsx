@@ -1,19 +1,21 @@
 "use client";
-import { useState, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
-import AuthContext from '../context/AuthProvider';
+import cookie from 'js-cookie';
 import './home.scss';
 
 export default function Home() {
   const router = useRouter();
-  const { auth, setAuth } = useContext(AuthContext);
 
-  if (Object.keys(auth).length === 0) {
-    router.push('/');
-  }
+  useEffect(() => {
+    const isLoggedIn = cookie.get("isLoggedIn");
+    if (!isLoggedIn) {
+      router.push('/');
+    }
+  }, []);
 
   const logout = () => {
-    setAuth({});
+    cookie.remove("isLoggedIn")
     router.push('/');
   }
 
