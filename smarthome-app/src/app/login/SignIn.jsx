@@ -28,10 +28,9 @@ export default function SignIn ({ toggleForm }) {
     };
 
     try {
-      const res = await axios.post(AUTH_URL, userData);
+      const res = await axios.post(AUTH_URL, userData, { withCredentials: true });
       if (res.data.status === 'success') {
-        const accessToken = res.data.key;
-        setAuth({ user: values.username, token: accessToken });
+        setAuth({ status: 'authorized', user: values.username });
         router.push("/");
       } else {
         alert('Niepoprawne dane logowania.');

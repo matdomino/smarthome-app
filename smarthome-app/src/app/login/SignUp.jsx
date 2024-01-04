@@ -33,11 +33,10 @@ export default function SignUp ({ toggleForm }) {
       };
 
       try {
-        const res = await axios.post(CREATEACC_URL, userData);
+        const res = await axios.post(CREATEACC_URL, userData, { withCredentials: true });
 
         if (res.data.status === 'success') {
-          const accessToken = res.data.key;
-          setAuth({ user: values.username, token: accessToken });
+          setAuth({ status: 'authorized', user: values.username });
           router.push("/");
         }
       } catch(err) {

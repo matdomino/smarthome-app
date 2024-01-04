@@ -7,11 +7,17 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const tokenKey = require('./tokenKey');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const port = 3000;
-app.use(cors());
+app.use(cors({
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  origin: 'http://localhost:3001'
+}));
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 const dbUrl = 'mongodb://localhost:27017/';
 const dbName = 'SmartHomeDB';
@@ -32,7 +38,13 @@ async function connect() {
         const existingUser = await usersCollection.findOne({ username: user });
         if (existingUser && await bcrypt.compare(pass, existingUser.password)) {
           const accessToken = jwt.sign({ user: existingUser.username }, tokenKey, { expiresIn: '1h' });
-          res.json({ status: 'success', key: accessToken });
+          res.cookie('username', user, {
+            httpOnly: true
+          });
+          res.cookie('accessToken', accessToken, {
+            httpOnly: true
+          });
+          res.json({ status: 'success' });
         } else {
           res.send({ status: 'failure' });
         }
@@ -85,6 +97,16 @@ async function connect() {
         }
 
       } catch(err) {
+        console.error(err);
+        res.status(500).json({ error: "Wystąpił błąd serwera." });
+      }
+    });
+
+    app.get('/userdata', async (req, res) => {
+      try {
+        console.log(req.cookies);
+
+      } catch (err) {
         console.error(err);
         res.status(500).json({ error: "Wystąpił błąd serwera." });
       }
