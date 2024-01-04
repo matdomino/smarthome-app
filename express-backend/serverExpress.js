@@ -85,14 +85,23 @@ async function connect() {
             const newUser = {
               email: email,
               username: user,
-              password: encryptedPass
+              password: encryptedPass,
+              devices: {}
             };
 
             const addUser = await usersCollection.insertOne(newUser);
 
             if (addUser.acknowledged === true) {
               const accessToken = jwt.sign({ user: user }, tokenKey, { expiresIn: '1h' });
-              res.json({ status: 'success', key: accessToken });
+              res.cookie('username', user, {
+                httpOnly: true,
+                maxAge: 60 * 60 * 1000
+              });
+              res.cookie('accessToken', accessToken, {
+                httpOnly: true,
+                maxAge: 60 * 60 * 1000
+              });
+              res.json({ status: 'success' });
             } else {
               return res.status(500).json({ error: 'Nie udało się dodać użytkoniwka.' });
             }

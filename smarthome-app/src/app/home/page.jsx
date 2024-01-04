@@ -28,7 +28,6 @@ export default function Home() {
         const res = await axios.get(USER_URL, { withCredentials: true });
           console.log(res.data);
       } catch {
-        console.log('lsd');
         router.push('/');
       }
     }
