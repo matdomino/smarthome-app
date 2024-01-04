@@ -1,14 +1,17 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useRouter } from "next/navigation";
 import axios from '@/api/axios';
 import cookie from 'js-cookie';
 import './home.scss';
+import AuthContext from '../context/AuthProvider';
 
 const USER_URL = "/userdata"
+const LOGOUT_URL ="/logout"
 
 export default function Home() {
   const [ data, setData ] = useState({});
+  const { auth, setAuth } = useContext(AuthContext);
   const router = useRouter();
 
 
@@ -19,25 +22,32 @@ export default function Home() {
     }
   }, []);
 
-  useEffect(() => {  // zmienic
+  useEffect(() => { 
     const dataFetch = async () => {
-      const userData = await axios.get(USER_URL, { withCredentials: true });
-        if (userData.data.status === "success") {
-          setData(userData.data.user);
-        } else {
-          cookie.remove("isLoggedIn");
-          router.push('/');
-        }
-    };
+      try {
+        const res = await axios.get(USER_URL, { withCredentials: true });
+          console.log(res.data);
+      } catch {
+        console.log('lsd');
+        router.push('/');
+      }
+    }
 
     dataFetch();
   }, []);
 
-  console.log(data);
-
-  const logout = () => {
-    cookie.remove("isLoggedIn");
-    router.push('/');
+  const logout = async () => {
+    try {
+      const res = await axios.delete(LOGOUT_URL, { withCredentials: true });
+      if (res.data.status) {
+        setAuth({});
+        router.push('/');
+      } else {
+        alert('Wystąpił błąd podczas przetwarzania żądania.')
+      }
+    } catch {
+      alert('Brak odpowiedzi serwera. Skontaktuj się z administratorem.')
+    }
   };
 
   return(

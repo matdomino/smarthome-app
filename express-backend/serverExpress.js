@@ -32,6 +32,12 @@ async function connect() {
     const db = client.db(dbName);
     const usersCollection = db.collection('users');
 
+    const clearAllCookies = (res) => {
+      res.clearCookie('LoggedInUser');
+      res.clearCookie('accessToken');
+      res.clearCookie('username');
+    };
+
     app.post('/auth', async (req, res) => {
       try {
         const { user, pass } = req.body;
@@ -39,10 +45,12 @@ async function connect() {
         if (existingUser && await bcrypt.compare(pass, existingUser.password)) {
           const accessToken = jwt.sign({ user: existingUser.username }, tokenKey, { expiresIn: '1h' });
           res.cookie('username', user, {
-            httpOnly: true
+            httpOnly: true,
+            maxAge: 60 * 60 * 1000
           });
           res.cookie('accessToken', accessToken, {
-            httpOnly: true
+            httpOnly: true,
+            maxAge: 60 * 60 * 1000
           });
           res.json({ status: 'success' });
         } else {
@@ -102,9 +110,39 @@ async function connect() {
       }
     });
 
+    app.delete('/logout', async (req, res) => {
+      try{
+        clearAllCookies(res);
+        res.json({ status: 'success' });
+      } catch (err) {
+        res.status(500).json({ error: "Wystąpił błąd serwera." });
+      }
+    });
+
     app.get('/userdata', async (req, res) => {
       try {
-        console.log(req.cookies);
+        const user = req.cookies.username;
+        const accessToken = req.cookies.accessToken;
+
+        if (!user || !accessToken) {
+          clearAllCookies(res);
+          return res.status(401).json({ error: "Brak autoryzacji." });
+        }
+
+        jwt.verify(accessToken, tokenKey, async (err, decoded) => {
+          if (err) {
+            return res.status(401).json({ error: "Brak autoryzacji." });
+          }
+
+          if (user !== decoded.user) {
+            clearAllCookies(res);
+            return res.status(401).json({ error: "Brak autoryzacji." });
+          }
+
+          const data = await usersCollection.findOne({ username: user });
+
+          res.json({ status: 'success', userData: data});
+        });
 
       } catch (err) {
         console.error(err);
