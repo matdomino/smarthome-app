@@ -86,7 +86,7 @@ async function connect() {
               email: email,
               username: user,
               password: encryptedPass,
-              devices: {}
+              devices: []
             };
 
             const addUser = await usersCollection.insertOne(newUser);

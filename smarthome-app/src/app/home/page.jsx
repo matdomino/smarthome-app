@@ -5,12 +5,14 @@ import axios from '@/api/axios';
 import cookie from 'js-cookie';
 import './home.scss';
 import AuthContext from '../context/AuthProvider';
+import { DevicesProvider } from '../context/DevicesProvider';
+import DevicesContext from '../context/DevicesProvider';
 
 const USER_URL = "/userdata"
 const LOGOUT_URL ="/logout"
 
-export default function Home() {
-  const [ data, setData ] = useState({});
+function Home() {
+  const { devices, setDevices } = useContext(DevicesContext);
   const { auth, setAuth } = useContext(AuthContext);
   const router = useRouter();
 
@@ -26,14 +28,19 @@ export default function Home() {
     const dataFetch = async () => {
       try {
         const res = await axios.get(USER_URL, { withCredentials: true });
-          console.log(res.data);
-      } catch {
+        setDevices(res.data.userData.devices);
+      } catch (err) {
+        console.log(err);
         router.push('/');
       }
     }
 
     dataFetch();
   }, []);
+  
+  useEffect(() => {
+    
+  }, [devices]);
 
   const logout = async () => {
     try {
@@ -50,11 +57,19 @@ export default function Home() {
   };
 
   return(
-    <>
-      <div className="navBar">
-        <span className="name">SmartHome App</span>
-        <a href="#" onClick={logout}>Wyloguj się</a>
-      </div>
-    </>
+      <>
+        <div className="navBar">
+          <span className="name">SmartHome App</span>
+          <a href="#" onClick={logout}>Wyloguj się</a>
+        </div>
+      </>
+  );
+}
+
+export default function Page() {
+  return (
+    <DevicesProvider>
+      <Home />
+    </DevicesProvider>
   );
 }
