@@ -14,6 +14,7 @@ const LOGOUT_URL ="/logout"
 
 function Home() {
   const { devices, setDevices } = useContext(DevicesContext);
+  const { AddDeviceMenu, setAddDeviceMenu } = useContext(DevicesContext);
   const { auth, setAuth } = useContext(AuthContext);
   const router = useRouter();
 
@@ -40,8 +41,7 @@ function Home() {
   }, []);
   
   useEffect(() => {
-    
-  }, [devices]);
+  }, [devices, AddDeviceMenu]);
 
   const logout = async () => {
     try {
@@ -57,6 +57,10 @@ function Home() {
     }
   };
 
+  const showAddDeviceMenu = () => {
+    setAddDeviceMenu(true);
+  }
+
   return(
       <>
         <div className='navBar'>
@@ -64,6 +68,7 @@ function Home() {
           <a href="#" onClick={logout}>Wyloguj się</a>
         </div>
         <main>
+          
           <div className='menu'>
             <div className='logs'>
               <div className='past-logs'>
@@ -78,11 +83,16 @@ function Home() {
               </div>
               <div className='list'>
                 <DevicesList />
-                <button className='addDevice'>+</button>
+                <button className='addDevice' onClick={showAddDeviceMenu}>+</button>
               </div>
             </div>
           </div>
         </main>
+        {AddDeviceMenu === true ? (
+          <div className='addDeviceMenu'>
+
+          </div>
+        ) : null}
       </>
   );
 }

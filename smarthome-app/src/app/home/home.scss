@@ -96,4 +96,18 @@ body{
       }
     }
   }
+
+  .addDeviceMenu {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 25rem;
+    height: 50%;
+    border: 0.1rem solid $primary950;
+    border-radius: 0.8rem;
+    box-shadow: 0rem 0rem 0.2rem $primary800;
+    background-color: $primary300;
+    
+  }
 }
