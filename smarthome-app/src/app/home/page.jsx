@@ -7,6 +7,7 @@ import './home.scss';
 import AuthContext from '../context/AuthProvider';
 import { DevicesProvider } from '../context/DevicesProvider';
 import DevicesContext from '../context/DevicesProvider';
+import DevicesList from './DevicesList';
 
 const USER_URL = "/userdata"
 const LOGOUT_URL ="/logout"
@@ -58,10 +59,30 @@ function Home() {
 
   return(
       <>
-        <div className="navBar">
+        <div className='navBar'>
           <span className="name">SmartHome App</span>
           <a href="#" onClick={logout}>Wyloguj się</a>
         </div>
+        <main>
+          <div className='menu'>
+            <div className='logs'>
+              <div className='past-logs'>
+
+              </div>
+              <div className='live-logs'>
+
+              </div>
+            </div>
+            <div className='devices'>
+              <div className='controls'>
+              </div>
+              <div className='list'>
+                <DevicesList />
+                <button className='addDevice'>+</button>
+              </div>
+            </div>
+          </div>
+        </main>
       </>
   );
 }
