@@ -8,6 +8,7 @@ import AuthContext from '../context/AuthProvider';
 import { DevicesProvider } from '../context/DevicesProvider';
 import DevicesContext from '../context/DevicesProvider';
 import DevicesList from './DevicesList';
+import AddDevice from './addDevice';
 
 const USER_URL = "/userdata"
 const LOGOUT_URL ="/logout"
@@ -83,14 +84,14 @@ function Home() {
               </div>
               <div className='list'>
                 <DevicesList />
-                <button className='addDevice' onClick={showAddDeviceMenu}>+</button>
+                <button className='addDeviceButton' onClick={showAddDeviceMenu}>+</button>
               </div>
             </div>
           </div>
         </main>
         {AddDeviceMenu === true ? (
           <div className='addDeviceMenu'>
-
+            <AddDevice />
           </div>
         ) : null}
       </>
