@@ -74,7 +74,7 @@ export default function AddDevice () {
             </label>
           </div>
           <div>
-            <label>
+            <label className="radiolabel">
               <input
                 type="radio"
                 name="deviceType"
@@ -82,11 +82,11 @@ export default function AddDevice () {
                 checked={values.deviceType === 'SmartLock'}
                 onChange={() => setFieldValue('deviceType', 'SmartLock')}
               />
-              Inteligenta zamek
+              Inteligenty zamek
             </label>
           </div>
           <div>
-            <label>
+            <label className="radiolabel">
               <input
                 type="radio"
                 name="deviceType"
@@ -98,7 +98,7 @@ export default function AddDevice () {
             </label>
           </div>
           <div>
-            <label>
+            <label className="radiolabel">
               <input
                 type="radio"
                 name="deviceType"
@@ -109,14 +109,26 @@ export default function AddDevice () {
               Klimatyzacja
             </label>
           </div>
+          <div>
+            <label className="radiolabel">
+              <input
+                type="radio"
+                name="deviceType"
+                value="thermometer"
+                checked={values.deviceType === 'thermometer'}
+                onChange={() => setFieldValue('deviceType', 'thermometer')}
+              />
+              Termometr
+            </label>
+          </div>
           <div className='errs'>
           <span>{errors.name}</span>
           <span>{errors.ipAdress}</span>
           <span>{errors.deviceType}</span>
         </div>
           <div className="buttons">
-            <button class="closeAddMenu" onClick={closeMenu}>Anuluj</button>
-            <button type="submit">Dodaj urządzenie</button>
+            <button className="closeAddMenu" onClick={closeMenu}>Anuluj</button>
+            <button className="submit" type="submit">Dodaj urządzenie</button>
           </div>
       </form>
     </>
