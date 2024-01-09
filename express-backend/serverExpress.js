@@ -31,6 +31,7 @@ async function connect() {
 
     const db = client.db(dbName);
     const usersCollection = db.collection('users');
+    const devicesCollection = db.collection('devices');
 
     const clearAllCookies = (res) => {
       res.clearCookie('LoggedInUser');

@@ -1,6 +1,7 @@
 use("SmartHomeDB");
 
 db.createCollection("users");
+db.createCollection("devices");
 
 db.users.insertOne({
     email: "adminemail@wp.pl",

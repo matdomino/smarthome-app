@@ -2,6 +2,9 @@ import { useContext } from "react";
 import DevicesContext from '../context/DevicesProvider';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import axios from "@/api/axios";
+
+const ADDDEVICE = "/adddevice"
 
 export default function AddDevice () {
   const { devices, setDevices } = useContext(DevicesContext);
@@ -12,18 +15,47 @@ export default function AddDevice () {
   }
 
   const onSubmit = async (values, { resetForm }) => {
+    const deviceData = {
+      name: values.name,
+      ipAdress: values.ipAdress,
+      id: values.id,
+      deviceType: values.deviceType
+    }
+
+    try {
+      const res = await axios.post(ADDDEVICE, deviceData, { withCredentials: true });
+      setDevices([
+        ...devices,
+        res.data.device
+      ]);
+
+      closeMenu();
+    } catch(err) {
+      if (err.response && err.response.data.error) {
+        alert(err.response.data.error);
+      } else {
+        alert('Brak odpowiedzi serwera. Skontaktuj się z administratorem.');
+      }
+    }
+
     resetForm();
   };
 
   const initialValues = {
     name: '',
     ipAdress: '',
+    id: '',
     deviceType: ''
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string().required('Nazwa urządzenia nie może być pusta.'),
-    ipAdress: Yup.string().required('Adres IP nie może być pusty.'),
+    name: Yup.string().min(3, "Za krótka nazwa").required('Nazwa urządzenia nie może być pusta.'),
+    ipAdress: Yup.string().required('Adres IP nie może być pusty.')
+      .matches(
+        /^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)$/,
+        'Nieprawidłowy format adresu IP'
+      ),
+    id: Yup.string().min(5, 'ID za krótkie.').required('ID nie może być puste.'),
     deviceType: Yup.string().required('Wybierz rodzaj urządzenia.')
   });
 
@@ -58,6 +90,17 @@ export default function AddDevice () {
             type="text"
             name="ipAdress"
             value={values.ipAdress}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <label>
+            ID urządzenia:
+          </label>
+          <input
+            type="text"
+            name="id"
+            value={values.id}
             onChange={handleChange}
           />
         </div>
@@ -124,6 +167,7 @@ export default function AddDevice () {
           <div className='errs'>
           <span>{errors.name}</span>
           <span>{errors.ipAdress}</span>
+          <span>{errors.id}</span>
           <span>{errors.deviceType}</span>
         </div>
           <div className="buttons">

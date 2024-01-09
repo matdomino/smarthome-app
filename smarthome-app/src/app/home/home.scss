@@ -8,6 +8,7 @@ body{
   width: 100%;
 
   .navBar{
+    z-index: 3;
     box-shadow: 0rem 0rem 0.5rem $primary950;
     box-sizing: border-box;
     padding: 0.5rem 2rem;
@@ -140,6 +141,12 @@ body{
         height: 1.5rem;
         border-radius: 0.3rem;
         border: 0.1rem solid $primary950;
+
+        &[type="radio"] {
+          &:checked {
+            accent-color: $primary950;
+          }
+        }
       }
 
       .buttons{
@@ -176,6 +183,6 @@ body{
         color: $primary950;
         font-size: small;
       }
-  }
+    }
   }
 }
