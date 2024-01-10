@@ -34,7 +34,11 @@ function Home() {
         setDevices(res.data.userData.devices);
       } catch (err) {
         console.log(err);
-        router.push('/');
+        if (err.message.includes('Network Error')) {
+          alert('Brak odpowiedzi serwera. Skontaktuj się z administratorem.');
+        } else {
+          router.push('/');
+        }
       }
     }
 

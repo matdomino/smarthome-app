@@ -2,7 +2,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -152,6 +152,110 @@ async function connect() {
           const data = await usersCollection.findOne({ username: user });
 
           res.json({ status: 'success', userData: data});
+        });
+
+      } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Wystąpił błąd serwera." });
+      }
+    });
+  
+    app.post('/adddevice', async (req, res) => {
+      try {
+        const user = req.cookies.username;
+        const accessToken = req.cookies.accessToken;
+        const { name, ipAdress, id, deviceType } = req.body;
+
+        if (!user || !accessToken) {
+          clearAllCookies(res);
+          return res.status(401).json({ error: "Brak autoryzacji." });
+        }
+
+        jwt.verify(accessToken, tokenKey, async (err, decoded) => {
+          if (err) {
+            return res.status(401).json({ error: "Brak autoryzacji." });
+          }
+
+          if (user !== decoded.user) {
+            clearAllCookies(res);
+            return res.status(401).json({ error: "Brak autoryzacji." });
+          }
+
+          const data = await usersCollection.findOne({ username: user });
+
+          if (data.devices.length > 10) {
+            return res.status(403).json({ error: "Osoiągnięto maksymalną ilość urządzeń." });
+          }
+
+          let correctData = true;
+          const allowedDeviceTypes = ["SmartBulb", "SmartLock", "SmartCurtains", "smartAC", "thermometer"];
+
+          if (!name || typeof(name) !== "string" || name.length < 3 || name.length > 20) {
+            correctData = false;
+          } else if (!ipAdress || typeof(ipAdress) !== "string" || !/^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)$/.test(ipAdress)) {
+            correctData = false;
+          } else if (!id || typeof(id) !== "string" || id.length < 5 || id.length > 20) {
+            correctData = false;
+          } else if (!allowedDeviceTypes.includes(deviceType)) {
+            correctData = false;
+          }
+
+          if (correctData) {
+            let device = {
+              user: data._id,
+              deviceType: deviceType
+            }
+
+            if (deviceType === "SmartBulb") {
+              device = {
+                ...device,
+                on: true,
+                brightness: 100,
+                logs: []
+              }
+            } else if (deviceType === "SmartLock") {
+              device = {
+                ...device,
+                open: true,
+                PIN: "0000",
+                logs: []
+              }
+            } else if (deviceType === "SmartCurtains") {
+              device = {
+                ...device,
+                open: true,
+                openPercent: 100,
+                logs: []
+              }
+            } else if (deviceType === "smartAC") {
+              device = {
+                ...device,
+                on: true,
+                temp: 20,
+                logs: []
+              }
+            } else if (deviceType === "thermometer") {
+              device = {
+                ...device,
+                humidity: 50,
+                temp: 20,
+                logs: []
+              }
+            }
+
+            const insertDevice = await devicesCollection.insertOne({ device });
+            const deviceInfo = {
+              deviceId: insertDevice.insertedId,
+              name: name,
+              ipAdress: ipAdress,
+              id: id
+            }
+            const userUpdate = await usersCollection.updateOne({ username: user }, { $set: { devices: [...data.devices, deviceInfo] }});
+
+            if (insertDevice.acknowledged === true && userUpdate.acknowledged === true) {
+              res.json({ status: 'success', device: device});
+            }
+          }
         });
 
       } catch (err) {

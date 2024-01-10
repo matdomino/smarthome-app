@@ -49,13 +49,13 @@ export default function AddDevice () {
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string().min(3, "Za krótka nazwa").required('Nazwa urządzenia nie może być pusta.'),
+    name: Yup.string().min(3, "Za krótka nazwa").max(20, "Za długa nazwa").required('Nazwa urządzenia nie może być pusta.'),
     ipAdress: Yup.string().required('Adres IP nie może być pusty.')
       .matches(
         /^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)$/,
         'Nieprawidłowy format adresu IP'
       ),
-    id: Yup.string().min(5, 'ID za krótkie.').required('ID nie może być puste.'),
+    id: Yup.string().min(5, 'ID za krótkie.').max(20, "ID za długie").required('ID nie może być puste.'),
     deviceType: Yup.string().required('Wybierz rodzaj urządzenia.')
   });
 
