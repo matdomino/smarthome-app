@@ -87,7 +87,7 @@ function Home() {
               <div className='controls'>
               </div>
               <div className='list'>
-                <DevicesList />
+                <DevicesList className='DevicesList'/>
                 <button className='addDeviceButton' onClick={showAddDeviceMenu}>+</button>
               </div>
             </div>

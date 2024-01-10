@@ -63,6 +63,39 @@ body{
 
         .list {
           position: relative;
+
+          ul {
+            padding: 0;
+            list-style: none;
+            overflow-y: auto;
+            height: 95%;
+
+            &::-webkit-scrollbar {
+              width: 0.4rem;
+            }
+
+            &::-webkit-scrollbar-thumb {
+              background-color: $primary600;
+              border-radius: 0.2rem;
+            }
+        
+
+            h3 {
+              padding-left: .5rem;
+              padding-bottom: 1rem;
+              margin: 0;
+            }
+
+            li {
+              border-top: 0.1rem solid $primary300;
+
+              p {
+                padding-left: 1rem;
+                overflow-wrap: break-word;
+              }
+            }
+          }
+
           .addDeviceButton {
             position: absolute;
             right: 1rem;
