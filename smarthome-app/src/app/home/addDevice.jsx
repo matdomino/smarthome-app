@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { useRouter } from "next/navigation";
 import DevicesContext from '../context/DevicesProvider';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -9,6 +10,7 @@ const ADDDEVICE = "/adddevice"
 export default function AddDevice () {
   const { devices, setDevices } = useContext(DevicesContext);
   const { setAddDeviceMenu } = useContext(DevicesContext);
+  const router = useRouter();
 
   const closeMenu = () => {
     setAddDeviceMenu(false);
@@ -32,6 +34,9 @@ export default function AddDevice () {
       closeMenu();
     } catch(err) {
       if (err.response && err.response.data.error) {
+        if (err.response.status === 401) {
+          router.push('/');
+        }
         alert(err.response.data.error);
       } else {
         alert('Brak odpowiedzi serwera. Skontaktuj się z administratorem.');
