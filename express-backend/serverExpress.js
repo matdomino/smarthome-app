@@ -180,6 +180,17 @@ async function connect() {
 
         const data = await usersCollection.findOne({ username: user });
 
+        const existingIp = data.devices.find(device => device.ipAdress === ipAdress);
+        const existingId = data.devices.find(device => device.id === id);
+
+        if (existingIp) {
+          return res.status(400).json({ error: "Urządzenie o podanym adresie IP już istnieje." });
+        }
+
+        if (existingId) {
+          return res.status(400).json({ error: "Urządzenie o podanym ID już istnieje." });
+        }
+
         if (data.devices.length > 10) {
           return res.status(403).json({ error: "Osoiągnięto maksymalną ilość urządzeń." });
         }
@@ -272,6 +283,11 @@ async function connect() {
         const isAuthenticated = await verifyAuth(req, res);
         if (isAuthenticated !== true) {
           return;
+        }
+
+        const existingUsername = await usersCollection.findOne({ username: user });
+        if (existingUsername) {
+          return res.status(400).json({ error: "Podana nazwa użytkownika jest zajęta." });
         }
 
         const existingUser = await usersCollection.findOne({ username: userName });
