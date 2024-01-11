@@ -41,7 +41,6 @@ async function connect() {
     async function verifyAuth(req, res) {
       const user = req.cookies.username;
       const accessToken = req.cookies.accessToken;
-    
       if (!user || !accessToken) {
         clearAllCookies(res);
         return res.status(401).json({ error: "Brak autoryzacji." });
@@ -266,7 +265,7 @@ async function connect() {
         const userName = req.cookies.username;
         const { user, pass } = req.body;
 
-        if (!pass || user) {
+        if (!pass || !user) {
           return res.status(400).json({ error: "Zmanipulowano dane" });
         }
 
@@ -320,6 +319,40 @@ async function connect() {
           }
         } else {
           res.status(400).json({ error: "Podano obecne hasło." })
+        }
+
+      } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Wystąpił błąd serwera." });
+      }
+    });
+
+    app.delete('/deleteacc', async (req, res) => {
+      try {
+        const userName = req.cookies.username;
+        const { pass } = req.body;
+
+        console.log(userName);
+        console.log(pass);
+
+
+        const isAuthenticated = await verifyAuth(req, res);
+        if (isAuthenticated !== true) {
+          return;
+        }
+
+        const existingUser = await usersCollection.findOne({ username: userName });
+
+        if (await bcrypt.compare(pass, existingUser.password) === true) {
+          const deleteDevices = await devicesCollection.deleteMany({ "device.user": existingUser._id });
+          const deleteUser = await usersCollection.deleteOne({ username: userName });
+
+          if (deleteDevices.acknowledged === true && deleteUser.acknowledged === true) {
+            clearAllCookies(res);
+            res.json({ status: "success" });
+          }
+        } else {
+          res.status(400).json({ error: "Podano niepoprawne hasło." })
         }
 
       } catch (err) {

@@ -11,6 +11,7 @@ import DevicesList from './DevicesList';
 import AddDevice from './addDevice';
 import UsernameChange from './usernameChange';
 import PasswordChange from './passwordChange';
+import DeleteAcc from './DeleteAcc';
 
 const USER_URL = "/userdata"
 const LOGOUT_URL ="/logout"
@@ -121,6 +122,7 @@ function Home() {
             <>
               <UsernameChange />
               <PasswordChange />
+              <DeleteAcc />
               <button className='closeUserMenu' onClick={closeMenu}>X</button>
             </>
           </div>
