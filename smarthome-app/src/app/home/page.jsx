@@ -9,14 +9,16 @@ import { DevicesProvider } from '../context/DevicesProvider';
 import DevicesContext from '../context/DevicesProvider';
 import DevicesList from './DevicesList';
 import AddDevice from './addDevice';
+import UsernameChange from './usernameChange';
 
 const USER_URL = "/userdata"
 const LOGOUT_URL ="/logout"
 
 function Home() {
   const { devices, setDevices } = useContext(DevicesContext);
-  const { AddDeviceMenu, setAddDeviceMenu } = useContext(DevicesContext);
+  const { menu, setMenu } = useContext(DevicesContext);
   const { auth, setAuth } = useContext(AuthContext);
+  const [ user, setUser ] = useState();
   const router = useRouter();
 
 
@@ -25,6 +27,8 @@ function Home() {
     if (!LoggedInUser) {
       router.push('/');
     }
+
+    setUser(LoggedInUser);
   }, []);
 
   useEffect(() => { 
@@ -46,7 +50,7 @@ function Home() {
   }, []);
   
   useEffect(() => {
-  }, [devices, AddDeviceMenu]);
+  }, [menu, setMenu]);
 
   const logout = async () => {
     try {
@@ -63,39 +67,55 @@ function Home() {
   };
 
   const showAddDeviceMenu = () => {
-    setAddDeviceMenu(true);
+    setMenu("addDevice");
+  }
+
+  const showProfileChangeMenu = () => {
+    setMenu("accChange");
   }
 
   return(
       <>
         <div className='navBar'>
           <span className="name">SmartHome App</span>
-          <a href="#" onClick={logout}>Wyloguj się</a>
+          <div className='options'>
+            <a href="#" onClick={showProfileChangeMenu}>Konto: {user}</a>
+            <a href="#" onClick={logout}>Wyloguj się</a>
+          </div>
         </div>
         <main>
           
           <div className='menu'>
             <div className='logs'>
               <div className='past-logs'>
-
+                <h3>Historia logów</h3>
               </div>
               <div className='live-logs'>
-
+                <h3>Nowe logi</h3>
               </div>
             </div>
             <div className='devices'>
               <div className='controls'>
+              <h3>Ustawienia</h3>
               </div>
               <div className='list'>
+                <h3>Urządzenia</h3>
                 <DevicesList className='DevicesList'/>
                 <button className='addDeviceButton' onClick={showAddDeviceMenu}>+</button>
               </div>
             </div>
           </div>
         </main>
-        {AddDeviceMenu === true ? (
-          <div className='addDeviceMenu'>
+        {menu === "addDevice" ? (
+          <div className='deviceMenu'>
             <AddDevice />
+          </div>
+        ) : null}
+        {menu === "accChange" ? (
+          <div className='deviceMenu'>
+            <>
+            <UsernameChange />
+            </>
           </div>
         ) : null}
       </>

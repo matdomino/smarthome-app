@@ -25,9 +25,15 @@ body{
       color: $primary50;
     }
 
-    a{
-      color: $primary200;
-      text-decoration: none;
+    .options {
+      display: flex;
+      justify-content: space-between;
+      width: 13rem;
+
+      a{
+        color: $primary200;
+        text-decoration: none;
+      }
     }
   }
 
@@ -64,11 +70,18 @@ body{
         .list {
           position: relative;
 
+          h3 {
+            color: $primary950;
+            padding: 1rem 0 1rem 1rem;
+            margin: 0;
+          }
+
           ul {
             padding: 0;
             list-style: none;
             overflow-y: auto;
-            height: 95%;
+            height: 85%;
+            width: 100%;
 
             &::-webkit-scrollbar {
               width: 0.4rem;
@@ -78,18 +91,22 @@ body{
               background-color: $primary600;
               border-radius: 0.2rem;
             }
-        
-
-            h3 {
-              padding-left: .5rem;
-              padding-bottom: 1rem;
-              margin: 0;
-            }
 
             li {
               border-top: 0.1rem solid $primary300;
+              padding: 1rem 0rem 1rem;
+
+              &:hover {
+                cursor: pointer;
+              }
+
+              &.selected {
+                color: $primary50;
+                background-color: $primary400;
+              }
 
               p {
+                margin: 0;
                 padding-left: 1rem;
                 overflow-wrap: break-word;
               }
@@ -113,6 +130,15 @@ body{
             }
           }
         }
+
+      .controls {
+
+        h3 {
+          color: $primary950;
+          padding: 1rem 0 1rem 1rem;
+          margin: 0;
+        }
+      }
       }
   
       .logs {
@@ -120,6 +146,23 @@ body{
         flex-direction: column;
         width: 55%;
         height: 100%;
+
+        .past-logs {
+          h3 {
+            color: $primary950;
+            padding: 1rem 0 1rem 1rem;
+            margin: 0;
+          }
+        }
+
+        .live-logs {
+          h3 {
+            color: $primary950;
+            padding: 1rem 0 1rem 1rem;
+            margin: 0;
+          }
+        }
+
         > div {
           margin: 0.5rem;
           height: 50%;
@@ -131,8 +174,9 @@ body{
     }
   }
 
-  .addDeviceMenu {
+  .deviceMenu {
     display: flex;
+    flex-direction: column;
     align-items: center;
     position: absolute;
     padding: 0.5rem 1rem;
@@ -206,7 +250,7 @@ body{
           background-color: $primary800;
         }
 
-        .closeAddMenu{
+        .closeMenu{
           color: $primary950;
           background-color: $primary50;
         }

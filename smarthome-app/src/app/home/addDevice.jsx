@@ -9,11 +9,11 @@ const ADDDEVICE = "/adddevice"
 
 export default function AddDevice () {
   const { devices, setDevices } = useContext(DevicesContext);
-  const { setAddDeviceMenu } = useContext(DevicesContext);
+  const { setMenu } = useContext(DevicesContext);
   const router = useRouter();
 
   const closeMenu = () => {
-    setAddDeviceMenu(false);
+    setMenu(null);
   }
 
   const onSubmit = async (values, { resetForm }) => {
@@ -176,7 +176,7 @@ export default function AddDevice () {
           <span>{errors.deviceType}</span>
         </div>
           <div className="buttons">
-            <button className="closeAddMenu" onClick={closeMenu}>Anuluj</button>
+            <button className="closeMenu" onClick={closeMenu}>Anuluj</button>
             <button className="submit" type="submit">Dodaj urządzenie</button>
           </div>
       </form>

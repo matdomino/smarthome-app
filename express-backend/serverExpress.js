@@ -260,6 +260,34 @@ async function connect() {
       }
     });
 
+    app.put('/usernamechange', async (req, res) => {
+      try {
+        const userName = req.cookies.username;
+        const { user, pass } = req.body;
+
+        const isAuthenticated = await verifyAuth(req, res);
+        if (isAuthenticated !== true) {
+          return;
+        }
+
+        const existingUser = await usersCollection.findOne({ username: userName });
+
+        if (await bcrypt.compare(pass, existingUser.password)) {
+          const update = await usersCollection.updateOne({ _id: existingUser._id }, { $set: { username: user } });
+
+          if (update.acknowledged === true) {
+            clearAllCookies(res);
+            res.json({ status: "success" });
+          }
+        } else {
+          res.status(400).json({ error: "Niepoprawne hasło" });
+        }
+      } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Wystąpił błąd serwera." });
+      }
+    });
+
     app.listen(port, () => {
       console.log(`Serwer działa na porcie: ${port}`);
     });
