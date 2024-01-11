@@ -332,10 +332,6 @@ async function connect() {
         const userName = req.cookies.username;
         const { pass } = req.body;
 
-        console.log(userName);
-        console.log(pass);
-
-
         const isAuthenticated = await verifyAuth(req, res);
         if (isAuthenticated !== true) {
           return;
@@ -344,7 +340,7 @@ async function connect() {
         const existingUser = await usersCollection.findOne({ username: userName });
 
         if (await bcrypt.compare(pass, existingUser.password) === true) {
-          const deleteDevices = await devicesCollection.deleteMany({ "device.user": existingUser._id });
+          const deleteDevices = await devicesCollection.deleteMany({ "device.user": new ObjectId(existingUser._id) });
           const deleteUser = await usersCollection.deleteOne({ username: userName });
 
           if (deleteDevices.acknowledged === true && deleteUser.acknowledged === true) {
