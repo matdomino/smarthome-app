@@ -56,6 +56,7 @@ async function connect() {
 
         return true;
       } catch (err) {
+        clearAllCookies(res);
         return res.status(401).json({ error: "Brak autoryzacji." });
       }
     }
@@ -265,6 +266,10 @@ async function connect() {
         const userName = req.cookies.username;
         const { user, pass } = req.body;
 
+        if (!pass || user) {
+          return res.status(400).json({ error: "Zmanipulowano dane" });
+        }
+
         const isAuthenticated = await verifyAuth(req, res);
         if (isAuthenticated !== true) {
           return;
@@ -282,6 +287,41 @@ async function connect() {
         } else {
           res.status(400).json({ error: "Niepoprawne hasło" });
         }
+      } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Wystąpił błąd serwera." });
+      }
+    });
+
+    app.put('/passwordchange', async (req, res) => {
+      try {
+        const userName = req.cookies.username;
+        const { pass } = req.body;
+
+        if (!pass) {
+          return res.status(400).json({ error: "Zmanipulowano dane" });
+        }
+
+        const isAuthenticated = await verifyAuth(req, res);
+        if (isAuthenticated !== true) {
+          return;
+        }
+
+        const existingUser = await usersCollection.findOne({ username: userName });
+
+        if (await bcrypt.compare(pass, existingUser.password) === false) {
+          const encryptedPass = await bcrypt.hash(pass, 10);
+
+          const update = await usersCollection.updateOne({ username: userName }, { $set: { password: encryptedPass } });
+
+          if (update.acknowledged === true) {
+            clearAllCookies(res);
+            res.json({ status: "success" });
+          }
+        } else {
+          res.status(400).json({ error: "Podano obecne hasło." })
+        }
+
       } catch (err) {
         console.error(err);
         res.status(500).json({ error: "Wystąpił błąd serwera." });

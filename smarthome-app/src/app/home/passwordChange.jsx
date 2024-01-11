@@ -3,29 +3,28 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from "@/api/axios";
 
-const USERNAME_CHANGE = "/usernamechange"
+const PASSWORD_CHANGE = "/passwordchange"
 
-export default function UsernameChange() {
+export default function PasswordChange() {
   const router = useRouter();
 
   const initialValues = {
-    newUsername: '',
-    password: '',
+    newPassword: '',
+    passwordRep: '',
   }
 
   const validationSchema = Yup.object({
-    newUsername: Yup.string().min(5, "Za krótka nazwa użytkownika").max(20, "Za długa nazwa użytkownika").required('Nazwa użytkownika nie może być pusta.'),
-    password: Yup.string().required("Podaj hasło.")
+    newPassword: Yup.string().min(5, 'Za krótkie hasło').max(40, "Za długie hasło").required('Hasło nie może być puste.'),
+    passwordRep: Yup.string().oneOf([Yup.ref('newPassword'), null], 'Hasła się nie zgadzają')
   });
 
   const onSubmit = async (values, { resetForm }) => {
     const data = {
-      user: values.newUsername,
-      pass: values.password
-    };
-    
+      pass: values.newPassword
+    }
+
     try {
-      const res = await axios.put(USERNAME_CHANGE, data, { withCredentials: true });
+      const res = await axios.put(PASSWORD_CHANGE, data, { withCredentials: true });
 
       if (res.data.status === 'success') {
         router.push("/");
@@ -54,26 +53,26 @@ export default function UsernameChange() {
 
   return(
     <form onSubmit={handleSubmit}>
-      <h2>Zmień nazwę konta:</h2>
+      <h2>Zmień hasło:</h2>
       <div>
         <label>
-          Nowa nazwa użytkownika:
+          Nowe hasło:
         </label>
         <input
-          type="text"
-          name="newUsername"
-          value={values.newUsername}
+          type="password"
+          name="newPassword"
+          value={values.newPassword}
           onChange={handleChange}
         />
       </div>
       <div>
-        <label>
-          Hasło:
+      <label>
+          Powtórz hasło:
         </label>
         <input
           type="password"
-          name="password"
-          value={values.password}
+          name="passwordRep"
+          value={values.passwordRep}
           onChange={handleChange}
         />
       </div>
@@ -81,8 +80,8 @@ export default function UsernameChange() {
         <button className="submit" type="submit">Wyślij</button>
       </div>
       <div className='errs'>
-        <span>{errors.newUsername}</span>
-        <span>{errors.password}</span>
+        <span>{errors.newPassword}</span>
+        <span>{errors.passwordRep}</span>
       </div>
     </form>
   )

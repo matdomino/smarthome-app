@@ -10,6 +10,7 @@ import DevicesContext from '../context/DevicesProvider';
 import DevicesList from './DevicesList';
 import AddDevice from './addDevice';
 import UsernameChange from './usernameChange';
+import PasswordChange from './passwordChange';
 
 const USER_URL = "/userdata"
 const LOGOUT_URL ="/logout"
@@ -74,6 +75,10 @@ function Home() {
     setMenu("accChange");
   }
 
+  const closeMenu = () => {
+    setMenu(null);
+  }
+
   return(
       <>
         <div className='navBar'>
@@ -114,7 +119,9 @@ function Home() {
         {menu === "accChange" ? (
           <div className='deviceMenu'>
             <>
-            <UsernameChange />
+              <UsernameChange />
+              <PasswordChange />
+              <button className='closeUserMenu' onClick={closeMenu}>X</button>
             </>
           </div>
         ) : null}
