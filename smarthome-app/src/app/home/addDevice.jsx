@@ -60,7 +60,7 @@ export default function AddDevice () {
         /^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)$/,
         'Nieprawidłowy format adresu IP'
       ),
-    id: Yup.string().min(5, 'ID za krótkie.').max(20, "ID za długie").required('ID nie może być puste.'),
+    id: Yup.string().min(5, 'ID za krótkie.').max(40, "ID za długie").required('ID nie może być puste.'),
     deviceType: Yup.string().required('Wybierz rodzaj urządzenia.')
   });
 

@@ -202,7 +202,7 @@ async function connect() {
           correctData = false;
         } else if (!ipAdress || typeof(ipAdress) !== "string" || !/^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)$/.test(ipAdress)) {
           correctData = false;
-        } else if (!id || typeof(id) !== "string" || id.length < 5 || id.length > 20) {
+        } else if (!id || typeof(id) !== "string" || id.length < 5 || id.length > 40) {
           correctData = false;
         } else if (!allowedDeviceTypes.includes(deviceType)) {
           correctData = false;
