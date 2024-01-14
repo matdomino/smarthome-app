@@ -12,6 +12,7 @@ import AddDevice from './addDevice';
 import UsernameChange from './usernameChange';
 import PasswordChange from './passwordChange';
 import DeleteAcc from './DeleteAcc';
+import LiveLogs from './LiveLogs';
 
 const USER_URL = "/userdata"
 const LOGOUT_URL ="/logout"
@@ -98,6 +99,7 @@ function Home() {
               </div>
               <div className='live-logs'>
                 <h3>Nowe logi</h3>
+                <LiveLogs />
               </div>
             </div>
             <div className='devices'>
