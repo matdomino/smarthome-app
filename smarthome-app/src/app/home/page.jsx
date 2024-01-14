@@ -14,6 +14,11 @@ import PasswordChange from './passwordChange';
 import DeleteAcc from './DeleteAcc';
 import LiveLogs from './LiveLogs';
 import PastLogs from './PastLogs';
+import SmartBulbSettings from './SmartBulbSettings';
+import SmartLockSettings from './SmartLockSettings';
+import SmartCurtainsSettings from './SmartCurtainsSettings';
+import SmartACSettings from './SmartACSettings';
+import ThermometerSettings from './ThermometerSettings';
 
 const USER_URL = "/userdata"
 const LOGOUT_URL ="/logout"
@@ -22,8 +27,10 @@ function Home() {
   const { devices, setDevices } = useContext(DevicesContext);
   const { menu, setMenu } = useContext(DevicesContext);
   const { auth, setAuth } = useContext(AuthContext);
+  const { selectedData } = useContext(DevicesContext);
   const [ user, setUser ] = useState();
   const router = useRouter();
+  console.log(selectedData);
 
 
   useEffect(() => {
@@ -54,7 +61,7 @@ function Home() {
   }, []);
   
   useEffect(() => {
-  }, [menu, setMenu]);
+  }, [menu, setMenu, selectedData]);
 
   const logout = async () => {
     try {
@@ -82,6 +89,16 @@ function Home() {
     setMenu(null);
   }
 
+  const settingsComponents = {
+    SmartBulb: <SmartBulbSettings />,
+    SmartLock: <SmartLockSettings />,
+    SmartCurtains: <SmartCurtainsSettings />,
+    smartAC: <SmartACSettings />,
+    thermometer: <ThermometerSettings />
+  };
+
+  const selectedDeviceType = selectedData?.device.device.deviceType;
+
   return(
       <>
         <div className='navBar'>
@@ -106,7 +123,8 @@ function Home() {
             </div>
             <div className='devices'>
               <div className='controls'>
-              <h3>Ustawienia</h3>
+                <h3>Ustawienia</h3>
+                {selectedDeviceType && settingsComponents[selectedDeviceType]}
               </div>
               <div className='list'>
                 <h3>Urządzenia</h3>

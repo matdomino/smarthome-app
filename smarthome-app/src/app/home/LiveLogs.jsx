@@ -28,7 +28,7 @@ const LiveLogs = () => {
   return (
       <ul>
         {list.map((item, index) => (
-          <li key={index}>{item.msg}</li>
+          <li key={index}>{item.msg} {item.value && ` ${item.value}`}</li>
         ))}
       </ul>
   );
