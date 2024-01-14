@@ -9,7 +9,7 @@ const device = mqtt.connect('mqtt://localhost:1883');
 device.on('connect', function() {
   console.log('Połączono z brokerem MQTT');
   device.subscribe(`${deviceConfig.deviceId}`);
-  device.publish(`${deviceConfig.deviceId}`, `Urządzenie ${deviceConfig.deviceId} online.`);
+  device.publish(`${deviceConfig.deviceId}`, JSON.stringify({ msg: `Urządzenie ${deviceConfig.deviceId} online.` }));
 });
 
 const smartBulb = () => {
