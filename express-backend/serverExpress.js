@@ -211,58 +211,47 @@ async function connect() {
         if (correctData) {
           let device = {
             user: data._id,
-            deviceType: deviceType
-          }
-
-          if (deviceType === "SmartBulb") {
-            device = {
-              ...device,
-              on: true,
-              brightness: 100,
-              logs: []
-            }
-          } else if (deviceType === "SmartLock") {
-            device = {
-              ...device,
-              open: true,
-              PIN: "0000",
-              logs: []
-            }
-          } else if (deviceType === "SmartCurtains") {
-            device = {
-              ...device,
-              open: true,
-              openPercent: 100,
-              logs: []
-            }
-          } else if (deviceType === "smartAC") {
-            device = {
-              ...device,
-              on: true,
-              temp: 20,
-              logs: []
-            }
-          } else if (deviceType === "thermometer") {
-            device = {
-              ...device,
-              humidity: 50,
-              temp: 20,
-              logs: []
-            }
+            deviceType: deviceType,
+            id: id,
+            logs: []
           }
 
           const insertDevice = await devicesCollection.insertOne({ device });
           const deviceInfo = {
             deviceId: insertDevice.insertedId,
             name: name,
-            ipAdress: ipAdress,
-            id: id
+            ipAdress: ipAdress
           }
           const userUpdate = await usersCollection.updateOne({ username: user }, { $set: { devices: [...data.devices, deviceInfo] }});
 
           if (insertDevice.acknowledged === true && userUpdate.acknowledged === true) {
             res.json({ status: 'success', device: deviceInfo});
           }
+        }
+
+      } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Wystąpił błąd serwera." });
+      }
+    });
+
+    app.get('/getdevice/:deviceId', async (req, res) => {
+      try {
+        const user = req.cookies.username;
+        const isAuthenticated = await verifyAuth(req, res);
+        if (isAuthenticated !== true) {
+          return;
+        }
+
+        const { deviceId } = req.params;
+
+        const existingUser = await usersCollection.findOne({ username: user });
+        const device = await devicesCollection.findOne({ _id: new ObjectId(deviceId) });
+
+        if (device && existingUser._id.equals(device.device.user)) {
+          res.json({ status: 'success', device: device});
+        } else {
+          res.status(404).json({ error: "Nie znaleziono urządzenia." });
         }
 
       } catch (err) {
