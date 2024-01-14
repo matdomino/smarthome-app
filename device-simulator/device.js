@@ -127,11 +127,11 @@ const smartAC = () => {
       const randomOffset = Math.floor(Math.random() * 5) - 2;
       const randomTemp = settings.temperature + randomOffset;
 
-      // const msg = `Aktualna temperatura: ${randomTemp}`;
-      const msg = { temperature: randomTemp };
+      const msg = `Aktualna temperatura: ${randomTemp}`;
+      const msgObj = { msg: msg, value: randomTemp };
       
       console.log('wysylam');
-      device.publish(`${deviceConfig.deviceId}`, JSON.stringify(msg));
+      device.publish(`${deviceConfig.deviceId}`, JSON.stringify(msgObj));
     }
   }
 

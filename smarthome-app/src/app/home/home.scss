@@ -156,10 +156,29 @@ body{
         }
 
         .live-logs {
+          overflow: auto;
           h3 {
             color: $primary950;
             padding: 1rem 0 1rem 1rem;
             margin: 0;
+          }
+
+          ul {
+            color: $primary950;
+            margin: 0;
+            padding-left: 1rem;
+            list-style: none;
+            overflow-y: auto;
+            height: 75%;
+
+            &::-webkit-scrollbar {
+              width: 0.4rem;
+            }
+
+            &::-webkit-scrollbar-thumb {
+              background-color: $primary600;
+              border-radius: 0.2rem;
+            }
           }
         }
 

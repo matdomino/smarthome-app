@@ -13,14 +13,12 @@ const LiveLogs = () => {
       client.subscribe(`${selectedData.device.device.id}`);
 
       client.on('message', (topic, message) => {
-        console.log(JSON.parse(message.toString()));
         const data = JSON.parse(message.toString());
-        console.log(JSON.parse(message.toString()));
-
         setList((prevList) => [...prevList, data]);
       });
 
       return () => {
+        setList([]);
         client.unsubscribe(`${selectedData.device.device.id}`);
         client.end();
       };
@@ -28,13 +26,11 @@ const LiveLogs = () => {
   }, [selectedData]);
 
   return (
-    <>
       <ul>
         {list.map((item, index) => (
-          <li key={index}>{item.temperature}</li>
+          <li key={index}>{item.msg}</li>
         ))}
       </ul>
-    </>
   );
 };
 
