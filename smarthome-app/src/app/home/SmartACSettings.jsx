@@ -10,7 +10,7 @@ const turnOffOn = (selectedData) => {
   client.publish(`${selectedData.device.device.id}`, JSON.stringify({msg: "R: włącz/wyłącz klimatyzacje"}));
 };
 
-const ChangeTemp = () => {
+const ChangeTemp = ({ selectedData }) => {
   const initialValues = {
     temp: '',
   };
@@ -19,8 +19,8 @@ const ChangeTemp = () => {
     temp: Yup.number().typeError("Temperatura musi być liczbą.").min(5, "Za niska temperatura.").max(40, "Za wysoka temperatura").required("Temperatura nie może być pusta")
   });
 
-  const onSubmit = async (values, { resetForm }) => {
-    console.log("aisdbasd");
+  const onSubmit = async ( values, { resetForm }) => {
+    client.publish(`${selectedData.device.device.id}`, JSON.stringify({msg: "R: Ustaw temperature na:", value: values.temp}))
 
     resetForm();
   }
@@ -47,7 +47,7 @@ const ChangeTemp = () => {
             onChange={handleChange}
           />
         </div>
-        <button type="submit">Zaloguj się</button>
+        <button type="submit">Wyślij</button>
         <div className='errs'>
           <span>{errors.temp}</span>
         </div>
@@ -65,7 +65,7 @@ export default function SmartACSettings() {
       <button onClick={() => turnOffOn(selectedData)}>&rarr;</button>
     </div>
     <div>
-      <ChangeTemp/>
+      <ChangeTemp selectedData={selectedData} />
     </div>
   </div>
   );

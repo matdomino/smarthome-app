@@ -160,7 +160,7 @@ const smartAC = () => {
         setTimeout(() => {
           const newTemp = data.value;
           if (!isNaN(newTemp) && newTemp >= 5 && newTemp <= 40) {
-            settings.temperature = newTemp;
+            settings.temperature = Number(newTemp);
             device.publish(`${deviceConfig.deviceId}`, JSON.stringify({msg: 'Zmieniono temperature na:', value: newTemp}));
           } else {
             device.publish(`${deviceConfig.deviceId}`, JSON.stringify({msg: 'BŁĄD: niepoprawna temperatura'}));
