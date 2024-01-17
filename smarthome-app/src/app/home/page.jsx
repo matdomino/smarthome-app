@@ -20,8 +20,9 @@ import SmartCurtainsSettings from './SmartCurtainsSettings';
 import SmartACSettings from './SmartACSettings';
 import ThermometerSettings from './ThermometerSettings';
 
-const USER_URL = "/userdata"
-const LOGOUT_URL ="/logout"
+const USER_URL = "/userdata";
+const LOGOUT_URL ="/logout";
+const DELETEDEVICE_URL = "/deletedevice";
 
 function Home() {
   const { devices, setDevices } = useContext(DevicesContext);
@@ -88,19 +89,25 @@ function Home() {
     setMenu(null);
   }
 
-  const deleteDevice = () => {
-    const deviceId = selectedData.device._id;
-
-    const newDevices = devices.reduce((acc, elem) => {
-      if (elem.deviceId === deviceId) {
-        return(acc);
-      } else {
-        return([...acc, elem]);
+  const deleteDevice = async () => {
+    try {
+      const data = {
+        deviceId: selectedData.device._id
       }
-    }, []);
 
-    setDevices(newDevices);
-    setSelectedData(null);
+      const newDevices = devices.filter((elem) => elem.deviceId !== data.deviceId);
+
+      const res = await axios.delete(DELETEDEVICE_URL, { data: data, withCredentials: true });
+
+      if (res.data.status === "success") {
+        setDevices(newDevices);
+        setSelectedData(null);
+      } else {
+        alert('Wystąpił błąd podczas przetwarzania żądania.');
+      }
+    } catch (err) {
+      alert('Brak odpowiedzi serwera. Skontaktuj się z administratorem.');
+    }
   }
 
   const settingsComponents = {

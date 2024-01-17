@@ -362,6 +362,35 @@ async function connect() {
       }
     });
 
+    app.delete('/deletedevice', async (req, res) => {
+      try {
+        const userName = req.cookies.username;
+        const { deviceId } = req.body;
+
+        const isAuthenticated = await verifyAuth(req, res);
+        if (isAuthenticated !== true) {
+          return;
+        }
+        
+        const existingUser = await usersCollection.findOne({ username: userName });
+
+        const newDevices = existingUser.devices.filter((elem) => {
+          return !elem.deviceId.equals(new ObjectId(deviceId));
+        });
+
+        const updateUsers = await usersCollection.updateOne({ username: userName } , { $set: { devices: newDevices } });
+        const deleteDevice = await devicesCollection.deleteOne({ _id: new ObjectId(deviceId) });
+
+        if (updateUsers.acknowledged === true && deleteDevice.acknowledged === true) {
+          res.json({ status: "success" });
+        }
+
+      } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Wystąpił błąd serwera." });
+      }
+    });
+
     app.listen(port, () => {
       console.log(`Serwer działa na porcie: ${port}`);
     });
