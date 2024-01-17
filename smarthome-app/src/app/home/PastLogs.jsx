@@ -12,17 +12,13 @@ const PastLogs = () => {
   const { selectedData } = useContext(DevicesContext);
 
   useEffect(() => {
-    if (selectedData !== null) {
-      console.log(selectedData);
-    }
-
   }, [selectedData]);
 
   return(
     <ul>
       {selectedData && selectedData.device.device.logs.map((log, index) => (
         <li key={index}>
-          {formatDate(log.date)}, wiadomość: {log.msg} {log.value && ` ${log.value}`} {item.value2 && ` ${item.value2}`}
+          {formatDate(log.date)}, wiadomość: {log.msg} {log.value && ` ${log.value}`} {log.value2 && ` ${log.value2}`}
         </li>
       ))}
     </ul>

@@ -26,11 +26,10 @@ const LOGOUT_URL ="/logout"
 function Home() {
   const { devices, setDevices } = useContext(DevicesContext);
   const { menu, setMenu } = useContext(DevicesContext);
-  const { auth, setAuth } = useContext(AuthContext);
-  const { selectedData } = useContext(DevicesContext);
+  const { setAuth } = useContext(AuthContext);
+  const { selectedData, setSelectedData } = useContext(DevicesContext);
   const [ user, setUser ] = useState();
   const router = useRouter();
-  console.log(selectedData);
 
 
   useEffect(() => {
@@ -89,6 +88,21 @@ function Home() {
     setMenu(null);
   }
 
+  const deleteDevice = () => {
+    const deviceId = selectedData.device._id;
+
+    const newDevices = devices.reduce((acc, elem) => {
+      if (elem.deviceId === deviceId) {
+        return(acc);
+      } else {
+        return([...acc, elem]);
+      }
+    }, []);
+
+    setDevices(newDevices);
+    setSelectedData(null);
+  }
+
   const settingsComponents = {
     SmartBulb: <SmartBulbSettings />,
     SmartLock: <SmartLockSettings />,
@@ -125,6 +139,11 @@ function Home() {
               <div className='controls'>
                 <h3>Ustawienia</h3>
                 {selectedDeviceType && settingsComponents[selectedDeviceType]}
+                <div>
+                  {selectedDeviceType && (
+                    <button onClick={deleteDevice}>Usuń urządzenie</button>
+                  )}
+                </div>
               </div>
               <div className='list'>
                 <h3>Urządzenia</h3>
