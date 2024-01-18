@@ -132,14 +132,88 @@ body{
           }
         }
 
-      .controls {
+        .controls {
+          overflow: auto;
 
-        h3 {
-          color: $primary950;
-          padding: 1rem 0 1rem 1rem;
-          margin: 0;
+          h3 {
+            height: max-content;
+            color: $primary950;
+            padding: 1rem 0 1rem 1rem;
+            margin: 0;
+          }
+
+          .device-options {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 90%;
+
+            > div:first-child {
+              > div {
+                border-bottom: 0.1rem solid $primary950;
+                border-top: 0.1rem solid $primary950;
+                background-color: $primary400;
+                margin-bottom: 1rem;
+                padding-top: 0.5rem;
+                padding-bottom: 0.5rem;
+                color: $primary50;
+
+                form {
+                  .errs{
+                    color: $primary950;
+                    font-size: small;
+                  }
+                }
+
+                label {
+                  margin-left: 1rem;
+                }
+
+                input {
+                  border: 0.1rem solid $primary600;
+                  border-radius: 0.3rem;
+                  margin-left: 0.5rem;
+                  width: 2rem;
+                  height: 1.2rem;
+                }
+              }
+            }
+
+            .buttons {
+              padding: 1rem 1rem 0rem 0rem;
+              display: flex;
+              justify-content: flex-end;
+              
+              button {
+                border: 0.1rem solid $primary950;
+                border-radius: 0.3rem;
+                color: $primary50;
+                background-color: $primary700;
+
+                &:hover {
+                  cursor: pointer;
+                }
+              }
+
+              .turnOfOn {
+                width: 2rem;
+                height: 2rem;
+              }
+
+              .deleteDevice {
+                margin-bottom: 0.6rem;
+                width: 8rem;
+                height: 2rem;
+                box-shadow: 0rem 0rem 0.2rem $primary800;
+              }
+
+              .submit {
+                width: 4rem;
+                height: 2rem;
+              }
+            }
+          }
         }
-      }
       }
   
       .logs {

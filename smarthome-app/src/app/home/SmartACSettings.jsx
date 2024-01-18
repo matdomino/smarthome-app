@@ -47,7 +47,9 @@ const ChangeTemp = ({ selectedData }) => {
             onChange={handleChange}
           />
         </div>
-        <button type="submit">Wyślij</button>
+        <div className='buttons'>
+          <button className='submit' type="submit">Wyślij</button>
+        </div>
         <div className='errs'>
           <span>{errors.temp}</span>
         </div>
@@ -62,11 +64,11 @@ export default function SmartACSettings() {
   <div>
     <div>
       <label>Włącz/wyłącz klimatyzacje</label>
-      <button onClick={() => turnOffOn(selectedData)}>&rarr;</button>
+      <div className='buttons'>
+        <button className='turnOfOn' onClick={() => turnOffOn(selectedData)}>&rarr;</button>
+      </div>
     </div>
-    <div>
-      <ChangeTemp selectedData={selectedData} />
-    </div>
+    <ChangeTemp selectedData={selectedData} />
   </div>
   );
 }

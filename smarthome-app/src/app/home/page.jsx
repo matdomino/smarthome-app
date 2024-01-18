@@ -145,11 +145,13 @@ function Home() {
             <div className='devices'>
               <div className='controls'>
                 <h3>Ustawienia</h3>
-                {selectedDeviceType && settingsComponents[selectedDeviceType]}
-                <div>
-                  {selectedDeviceType && (
-                    <button onClick={deleteDevice}>Usuń urządzenie</button>
-                  )}
+                <div className='device-options'>
+                  {selectedDeviceType && settingsComponents[selectedDeviceType]}
+                  <div className='buttons'>
+                    {selectedDeviceType && (
+                      <button className='deleteDevice' onClick={deleteDevice}>Usuń urządzenie</button>
+                    )}
+                  </div>
                 </div>
               </div>
               <div className='list'>
