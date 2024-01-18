@@ -72,10 +72,10 @@ const smartLock = () => {
           }
           device.publish(`${deviceConfig.deviceId}`, JSON.stringify({msg: response}));
         }, 500);
-      } else if (data.msg === "R: zmień PIN na:") {
+      } else if (data.msg === "R: zmień PIN") {
         setTimeout(() => {
           const newPIN = data.pin;
-          const intPIN = parseInt(intPIN, 10);
+          const intPIN = parseInt(newPIN, 10);
 
           if (!isNaN(intPIN) && newPIN.length === 4) {
             settings.PIN = newPIN;
