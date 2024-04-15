@@ -49,7 +49,7 @@ Setup device simulator.
 open `/smarthome-app/device-simulator/` and run commands below:
 ```
 npm install
-device.js
+node device.js
 ```
 
 #### Optional:
