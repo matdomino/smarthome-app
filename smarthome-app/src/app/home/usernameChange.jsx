@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from "@/api/axios";
 
-const USERNAME_CHANGE = "/usernamechange"
+const USERNAME_CHANGE = "/usernamechange";
 
 export default function UsernameChange() {
   const router = useRouter();
@@ -11,7 +11,7 @@ export default function UsernameChange() {
   const initialValues = {
     newUsername: '',
     password: '',
-  }
+  };
 
   const validationSchema = Yup.object({
     newUsername: Yup.string().min(5, "Za krótka nazwa użytkownika").max(20, "Za długa nazwa użytkownika").required('Nazwa użytkownika nie może być pusta.'),
@@ -23,7 +23,7 @@ export default function UsernameChange() {
       user: values.newUsername,
       pass: values.password
     };
-    
+
     try {
       const res = await axios.put(USERNAME_CHANGE, data, { withCredentials: true });
 
@@ -85,5 +85,5 @@ export default function UsernameChange() {
         <span>{errors.password}</span>
       </div>
     </form>
-  )
+  );
 }

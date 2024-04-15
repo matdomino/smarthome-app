@@ -14,12 +14,12 @@ const port = 3000;
 app.use(cors({
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
-  origin: 'http://localhost:3001'
+  origin: 'http://localhost:8080'
 }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-const dbUrl = 'mongodb://localhost:27017/';
+const dbUrl = 'mongodb://mongo-db:27017/';
 const dbName = 'SmartHomeDB';
 
 async function connect() {
@@ -45,7 +45,7 @@ async function connect() {
         clearAllCookies(res);
         return res.status(401).json({ error: "Brak autoryzacji." });
       }
-    
+
       try {
         const decoded = await jwt.verify(accessToken, tokenKey);
         if (user !== decoded.user) {
@@ -167,7 +167,7 @@ async function connect() {
         res.status(500).json({ error: "Wystąpił błąd serwera." });
       }
     });
-  
+
     app.post('/adddevice', async (req, res) => {
       try {
         const user = req.cookies.username;
@@ -209,19 +209,19 @@ async function connect() {
         }
 
         if (correctData) {
-          let device = {
+          const device = {
             user: data._id,
             deviceType: deviceType,
             id: id,
             logs: []
-          }
+          };
 
           const insertDevice = await devicesCollection.insertOne({ device });
           const deviceInfo = {
             deviceId: insertDevice.insertedId,
             name: name,
             ipAdress: ipAdress
-          }
+          };
           const userUpdate = await usersCollection.updateOne({ username: user }, { $set: { devices: [...data.devices, deviceInfo] }});
 
           if (insertDevice.acknowledged === true && userUpdate.acknowledged === true) {
@@ -323,7 +323,7 @@ async function connect() {
             res.json({ status: "success" });
           }
         } else {
-          res.status(400).json({ error: "Podano obecne hasło." })
+          res.status(400).json({ error: "Podano obecne hasło." });
         }
 
       } catch (err) {
@@ -353,7 +353,7 @@ async function connect() {
             res.json({ status: "success" });
           }
         } else {
-          res.status(400).json({ error: "Podano niepoprawne hasło." })
+          res.status(400).json({ error: "Podano niepoprawne hasło." });
         }
 
       } catch (err) {
@@ -371,14 +371,14 @@ async function connect() {
         if (isAuthenticated !== true) {
           return;
         }
-        
+
         const existingUser = await usersCollection.findOne({ username: userName });
 
         const newDevices = existingUser.devices.filter((elem) => {
           return !elem.deviceId.equals(new ObjectId(deviceId));
         });
 
-        const updateUsers = await usersCollection.updateOne({ username: userName } , { $set: { devices: newDevices } });
+        const updateUsers = await usersCollection.updateOne({ username: userName }, { $set: { devices: newDevices } });
         const deleteDevice = await devicesCollection.deleteOne({ _id: new ObjectId(deviceId) });
 
         if (updateUsers.acknowledged === true && deleteDevice.acknowledged === true) {

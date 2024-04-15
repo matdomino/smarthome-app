@@ -20,7 +20,7 @@ const ChangePIN = ({ selectedData }) => {
   });
 
   const onSubmit = async ( values, { resetForm }) => {
-    client.publish(`${selectedData.device.device.id}`, JSON.stringify({msg: "R: zmień PIN", pin: values.PIN}))
+    client.publish(`${selectedData.device.device.id}`, JSON.stringify({msg: "R: zmień PIN", pin: values.PIN}));
 
     resetForm();
   };

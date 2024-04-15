@@ -42,7 +42,7 @@ function Home() {
     setUser(LoggedInUser);
   }, []);
 
-  useEffect(() => { 
+  useEffect(() => {
     const dataFetch = async () => {
       try {
         const res = await axios.get(USER_URL, { withCredentials: true });
@@ -55,11 +55,11 @@ function Home() {
           router.push('/');
         }
       }
-    }
+    };
 
     dataFetch();
   }, []);
-  
+
   useEffect(() => {
   }, [menu, setMenu, selectedData]);
 
@@ -70,30 +70,30 @@ function Home() {
         setAuth({});
         router.push('/');
       } else {
-        alert('Wystąpił błąd podczas przetwarzania żądania.')
+        alert('Wystąpił błąd podczas przetwarzania żądania.');
       }
     } catch {
-      alert('Brak odpowiedzi serwera. Skontaktuj się z administratorem.')
+      alert('Brak odpowiedzi serwera. Skontaktuj się z administratorem.');
     }
   };
 
   const showAddDeviceMenu = () => {
     setMenu("addDevice");
-  }
+  };
 
   const showProfileChangeMenu = () => {
     setMenu("accChange");
-  }
+  };
 
   const closeMenu = () => {
     setMenu(null);
-  }
+  };
 
   const deleteDevice = async () => {
     try {
       const data = {
         deviceId: selectedData.device._id
-      }
+      };
 
       const newDevices = devices.filter((elem) => elem.deviceId !== data.deviceId);
 
@@ -108,7 +108,7 @@ function Home() {
     } catch (err) {
       alert('Brak odpowiedzi serwera. Skontaktuj się z administratorem.');
     }
-  }
+  };
 
   const settingsComponents = {
     SmartBulb: <SmartBulbSettings />,
@@ -130,7 +130,6 @@ function Home() {
           </div>
         </div>
         <main>
-          
           <div className='menu'>
             <div className='logs'>
               <div className='past-logs'>

@@ -16,7 +16,7 @@ const ChangeOpenPercentage = ({ selectedData }) => {
   });
 
   const onSubmit = async ( values, { resetForm }) => {
-    client.publish(`${selectedData.device.device.id}`, JSON.stringify({msg: "R: Ustaw stopień otwarcia na:", value: values.percentage}))
+    client.publish(`${selectedData.device.device.id}`, JSON.stringify({msg: "R: Ustaw stopień otwarcia na:", value: values.percentage}));
 
     resetForm();
   };
@@ -67,7 +67,7 @@ const ChangeOpenAngle = ({ selectedData }) => {
     client.publish(`${selectedData.device.device.id}`, JSON.stringify({msg: "R: Ustaw kąt otwarcia na:", value: values.angle}));
 
     resetForm();
-  }
+  };
 
   const formik = useFormik({
     initialValues,

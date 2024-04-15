@@ -20,10 +20,10 @@ const ChangeTemp = ({ selectedData }) => {
   });
 
   const onSubmit = async ( values, { resetForm }) => {
-    client.publish(`${selectedData.device.device.id}`, JSON.stringify({msg: "R: Ustaw temperature na:", value: values.temp}))
+    client.publish(`${selectedData.device.device.id}`, JSON.stringify({msg: "R: Ustaw temperature na:", value: values.temp}));
 
     resetForm();
-  }
+  };
 
   const formik = useFormik({
     initialValues,
@@ -56,7 +56,7 @@ const ChangeTemp = ({ selectedData }) => {
       </form>
     </div>
   );
-}
+};
 
 export default function SmartACSettings() {
   const { selectedData } = useContext(DevicesContext);

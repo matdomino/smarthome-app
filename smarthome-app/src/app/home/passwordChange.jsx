@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from "@/api/axios";
 
-const PASSWORD_CHANGE = "/passwordchange"
+const PASSWORD_CHANGE = "/passwordchange";
 
 export default function PasswordChange() {
   const router = useRouter();
@@ -11,7 +11,7 @@ export default function PasswordChange() {
   const initialValues = {
     newPassword: '',
     passwordRep: '',
-  }
+  };
 
   const validationSchema = Yup.object({
     newPassword: Yup.string().min(5, 'Za krótkie hasło').max(40, "Za długie hasło").required('Hasło nie może być puste.'),
@@ -21,7 +21,7 @@ export default function PasswordChange() {
   const onSubmit = async (values, { resetForm }) => {
     const data = {
       pass: values.newPassword
-    }
+    };
 
     try {
       const res = await axios.put(PASSWORD_CHANGE, { data, withCredentials: true });
@@ -84,5 +84,5 @@ export default function PasswordChange() {
         <span>{errors.passwordRep}</span>
       </div>
     </form>
-  )
+  );
 }

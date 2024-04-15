@@ -10,7 +10,7 @@ export default function DeleteAcc() {
 
   const initialValues = {
     password: '',
-  }
+  };
 
   const validationSchema = Yup.object({
     password: Yup.string().required('Hasło nie może być puste.'),
@@ -19,7 +19,7 @@ export default function DeleteAcc() {
   const onSubmit = async (values, { resetForm }) => {
     const data = {
       pass: values.password
-    }
+    };
 
     try {
       const res = await axios.delete(DELETE_ACC, { data: data, withCredentials: true });

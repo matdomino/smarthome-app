@@ -2,7 +2,7 @@ const mqtt = require('mqtt');
 const { MongoClient, ObjectId } = require('mongodb');
 const axios = require('axios');
 
-const dbUrl = 'mongodb://localhost:27017/';
+const dbUrl = 'mongodb://mongo-db:27017/';
 const dbName = 'SmartHomeDB';
 
 async function connect() {

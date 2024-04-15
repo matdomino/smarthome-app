@@ -23,7 +23,7 @@ const ChangeBrightness = ({ selectedData }) => {
     client.publish(`${selectedData.device.device.id}`, JSON.stringify({msg: "R: zmień jasność na:", value: values.brightness}));
 
     resetForm();
-  }
+  };
 
   const formik = useFormik({
     initialValues,
@@ -56,7 +56,7 @@ const ChangeBrightness = ({ selectedData }) => {
       </form>
     </div>
   );
-}
+};
 
 export default function SmartBulbSettings() {
   const { selectedData } = useContext(DevicesContext);

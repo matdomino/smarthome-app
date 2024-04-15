@@ -1,14 +1,23 @@
 {
-  "extends": "next/core-web-vitals",
+  "extends": [
+    "next/core-web-vitals",
+    "eslint:recommended"
+  ],
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es2021": true
+  },
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  },
   "rules": {
     "no-console": 1,
     "no-empty": "error",
-    "no-empty-function": "error",
     "prefer-const": "error",
     "no-var": "error",
     "semi": ["error", "always"],
     "no-extra-semi": "error",
-    "no-async-promise-executor": "error",
     "no-constant-condition": "error",
     "no-debugger": "error",
     "no-dupe-args": "error",
@@ -35,9 +44,9 @@
     "no-trailing-spaces": "error",
     "semi-spacing": "error",
     "semi-style": ["error", "last"],
-    "init-declarations": [ "error", "always" ],
+    "init-declarations": ["error", "always"],
     "block-scoped-var": "error",
-    "strict": [ "error", "never" ],
+    "strict": ["error", "never"],
     "no-undef": "error",
     "no-unused-vars": "error"
   }

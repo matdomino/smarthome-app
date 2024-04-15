@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from "@/api/axios";
 
-const ADDDEVICE = "/adddevice"
+const ADDDEVICE = "/adddevice";
 
 export default function AddDevice () {
   const { devices, setDevices } = useContext(DevicesContext);
@@ -14,7 +14,7 @@ export default function AddDevice () {
 
   const closeMenu = () => {
     setMenu(null);
-  }
+  };
 
   const onSubmit = async (values, { resetForm }) => {
     const deviceData = {
@@ -22,7 +22,7 @@ export default function AddDevice () {
       ipAdress: values.ipAdress,
       id: values.id,
       deviceType: values.deviceType
-    }
+    };
 
     try {
       const res = await axios.post(ADDDEVICE, deviceData, { withCredentials: true });

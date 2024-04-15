@@ -6,7 +6,7 @@ const formatDate = (date) => {
   const formattedDate = dateObj.toLocaleDateString();
   const formattedTime = dateObj.toLocaleTimeString();
   return `${formattedDate} ${formattedTime}`;
-}
+};
 
 const PastLogs = () => {
   const { selectedData } = useContext(DevicesContext);
