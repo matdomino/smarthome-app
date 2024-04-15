@@ -45,9 +45,9 @@ docker exec -it smart-home-db mongosh smart-home-db ./setup/dbconfiguration.mong
 ```
 
 ### Step 4
-Setup device simulator.
-open `/smarthome-app/device-simulator/` and run commands below:
+Setup device simulator by running the commands below. The files are located in `/smarthome-app/device-simulator/`:
 ```
+cd device-simulator
 npm install
 node device.js
 ```
