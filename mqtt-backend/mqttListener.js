@@ -6,7 +6,7 @@ const dbUrl = 'mongodb://mongo-db:27017/';
 const dbName = 'SmartHomeDB';
 
 async function connect() {
-  const listener = mqtt.connect('ws://localhost:8000/mqtt');
+  const listener = mqtt.connect('ws://mqtt-broker:8000/mqtt');
   listener.subscribe('#');
 
   const client = new MongoClient(dbUrl);

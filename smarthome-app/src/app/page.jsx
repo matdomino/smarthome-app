@@ -20,6 +20,7 @@ export default function App() {
       expirationDate.setHours(expirationDate.getHours() + 1);
       cookie.set("LoggedInUser", auth.user, {expires: expirationDate});
       setAuth({});
+      router.push('/home');
     } else {
       router.push("/login");
     }

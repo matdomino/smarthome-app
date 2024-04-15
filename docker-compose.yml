@@ -29,6 +29,27 @@ services:
     networks:
       - containers-net
 
+  mqtt-broker:
+    image: mqtt-broker
+    container_name: smart-home-mqttbroker
+    restart: always
+    ports:
+      - "1883:1883"
+      - "8000:8000"
+    networks:
+      - containers-net
+
+  mqtt-backend:
+    image: node
+    container_name: smart-home-mqttbackend
+    restart: always
+    volumes:
+      - ./mqtt-backend:/mqtt/
+    working_dir: /mqtt/
+    command: ["sh", "-c", "npm install && node mqttListener.js"]
+    networks:
+      - containers-net
+
   frontend:
     image: node
     container_name: smart-home-front
@@ -36,6 +57,10 @@ services:
     volumes:
       - ./smarthome-app:/front/
     working_dir: /front/
-    command: ["sh", "-c", "npm install && npm run build && npm start"]
+    command: ["sh", "-c", "npm install && npm run dev && npm start"]
     ports:
       - "8080:8080"
+
+networks:
+  containers-net:
+    driver: bridge
