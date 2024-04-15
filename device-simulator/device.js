@@ -8,6 +8,8 @@ const device = mqtt.connect('mqtt://localhost:1883');
 
 device.on('connect', function() {
   console.log('Połączono z brokerem MQTT');
+  console.log(`DeviceId: ${deviceConfig.deviceId}`);
+  console.log(`Typ urządzenia: ${deviceConfig.deviceType}`);
   device.subscribe(`${deviceConfig.deviceId}`);
   device.publish(`${deviceConfig.deviceId}`, JSON.stringify({ msg: `Urządzenie ${deviceConfig.deviceId} online.` }));
 });
