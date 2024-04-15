@@ -52,6 +52,8 @@ npm install
 node device.js
 ```
 
+#### IMPORTANT: deviceId, and deviceType parameters are located in `/smarthome-app/device-simulator/config.js`
+
 #### Optional:
 - Change deviceId to test multiple devices in `/smarthome-app/device-simulator/config.json` - you can use `IDGen.js` file to get random ID.
 
