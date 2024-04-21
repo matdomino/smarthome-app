@@ -8,6 +8,8 @@
 ## Introduction
 A web application with a control panel for managing multiple devices for different users. After logging in, add a device to your profile, and then you can control it `(IMPORTANT: Fill the IP Address field with valid input - can be random)`.
 
+![Main page](https://i.imgur.com/m98iWaS.png)
+
 ### Used technology:
 - Next.js, React,
 - Node.js, express,
