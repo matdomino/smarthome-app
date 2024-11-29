@@ -6,8 +6,14 @@ const { MongoClient, ObjectId } = require('mongodb');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const tokenKey = require('./tokenKey');
 const cookieParser = require('cookie-parser');
+require('dotenv').config();
+
+const tokenKey = process.env.TOKEN_KEY;
+
+if (!tokenKey) {
+  throw new Error("TOKEN_KEY is not set in the environment variables");
+}
 
 const app = express();
 const port = 3000;

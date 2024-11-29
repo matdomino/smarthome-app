@@ -29,24 +29,31 @@ ports:
 ```
 
 ### Step 1
+Set up the `.env` file with `API tokenKey` in `smarthome-app` directory.
+You can refer to the `.env_sample` file for an example:
+```
+TOKEN_KEY=YOUR_TOKEN_KEY
+```
+
+### Step 2
 Create HiveMQ CE image with custom config for MQTT broker:
 ```
 docker build -t mqtt-broker .
 ```
 
-### Step 2
+### Step 3
 Set up containers with db, back-end, front-end, mqtt-broker, mqtt-backend:
 ```
 docker-compose up -d
 ```
 
-### Step 3
+### Step 4
 Set up database collections and example user:
 ```
 docker exec -it smart-home-db mongosh smart-home-db ./setup/dbconfiguration.mongodb.js
 ```
 
-### Step 4
+### Step 5
 Setup device simulator by running the commands below. The files are located in `/smarthome-app/device-simulator/`:
 ```
 cd device-simulator

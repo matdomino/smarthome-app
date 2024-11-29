@@ -26,6 +26,8 @@ services:
     command: ["sh", "-c", "npm install && node serverExpress.js"]
     ports:
       - "3000:3000"
+    environment:
+      TOKEN_KEY: ${TOKEN_KEY}
     networks:
       - containers-net
 
